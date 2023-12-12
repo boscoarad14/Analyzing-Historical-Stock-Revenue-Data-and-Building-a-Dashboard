@@ -1,0 +1,79 @@
+#Question 1: Use yfinance to Extract Stock Data
+!pip install yfinance==0.1.67
+!mamba install bs4==4.10.0 -y
+!pip install nbformat==4.2.0
+import yfinance as yf
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import warnings
+# Ignore all warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+url = 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/revenue.htm'
+data  = requests.get(url).text
+print(data)
+soup = BeautifulSoup(data, 'html5lib')
+soup
+read_html_pandas_data = pd.read_html(url)
+read_html_pandas_data = pd.read_html(str(soup))
+tesla_data = read_html_pandas_data [0]
+tesla_data.head()
+
+#Question 2: Use Webscraping to Extract Tesla Revenue Data
+tesla_data.tail(1)
+
+Question 3: Use yfinance to Extract Stock Data
+##Steps from 2 to 14 not need here because they are already done
+url_game = ' https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/stock.html'
+data_game = requests.get(url_game).text
+soup_game = BeautifulSoup(data_game, 'html5lib')
+read_html_pandas_data_gme = pd.read_html(url_game)
+read_html_pandas_data_gme = pd.read_html(str(soup_game))
+gme_data = read_html_pandas_data_gme [0]
+gme_data.head()
+
+#Question 4: Use Webscraping to Extract GME Revenue Data
+gme_data.tail(1)
+
+#Question 5: Plot Tesla Stock Graph
+##Create the data frame due to previous errors
+data = {
+    'index': [2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009],
+    'Year': [2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009],
+    'Revenue': [53823, 31536, 24578, 21461, 11759, 7000, 4046, 3198, 2013, 413, 204, 117, 112]
+}
+df = pd.DataFrame(data)
+df.set_index('Year', inplace=True)
+
+plt.figure(figsize=(10, 6))
+plt.plot(df.index, df['Revenue'], label='Revenue')
+
+plt.xlabel('Year')
+plt.ylabel('Millions of US $')
+plt.title('Tesla Annual Revenue')
+plt.grid(True)
+plt.legend()
+plt.ylim(0, 60000)
+plt.show()
+
+#Question 6: Plot GameStop Stock Graph
+data_gme = {
+    'index': [2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005],
+    'GameStop Annual Revenue (Millions of US $)': [6466, 8285, 8547, 7965, 9364, 9296, 9040, 8887, 9551, 9474, 9078, 8806, 7094, 5319, 3092, 1843],
+}
+df_gme = pd.DataFrame(data_gme)
+df_gme.set_index('index', inplace=True)
+
+plt.figure(figsize=(10, 6))
+plt.plot(df_gme.index, df_gme['GameStop Annual Revenue (Millions of US $)'], label='Revenue')
+
+plt.xlabel('Year')
+plt.ylabel('Revenue (Millions of US $)')
+plt.title('GameStop Annual Revenue Over Time')
+plt.grid(True)
+plt.legend()
+plt.ylim(0, 11000)
+plt.show()
